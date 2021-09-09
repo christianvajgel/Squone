@@ -21,6 +21,10 @@ class Box: NSObject {
     var left: Line!
     var boxType: BoxType!
     
+    // 0 - top / 1 - right / 2 - bottom / 3 - left
+    // var boxState = []
+    var id: String!
+    
     func boxContainsLine(_ line: Line) -> Bool {
         
         if (line == self.top) {
@@ -41,9 +45,10 @@ class Box: NSObject {
             
             if playerType == PlayerType.playerType1 {
                 self.boxType = BoxType.boxTypePlayer1
+                GameView.player_counter += 1
             } else  if playerType == PlayerType.playerType2 {
-                
                 self.boxType = BoxType.boxTypePlayer2
+                GameView.computer_counter += 1
             }
         }
     }
