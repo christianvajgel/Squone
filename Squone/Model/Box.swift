@@ -8,9 +8,9 @@
 import UIKit
 
 enum BoxType {
-   case boxTypeEmpty,
-        boxTypePlayer1,
-        boxTypePlayer2
+    case boxTypeEmpty,
+         boxTypePlayer1,
+         boxTypePlayer2
 }
 
 class Box: NSObject {
@@ -21,8 +21,6 @@ class Box: NSObject {
     var left: Line!
     var boxType: BoxType!
     
-    // 0 - top / 1 - right / 2 - bottom / 3 - left
-    // var boxState = []
     var id: String!
     
     func boxContainsLine(_ line: Line) -> Bool {
@@ -44,18 +42,33 @@ class Box: NSObject {
         if self.top.lineType != LineType.lineTypeEmpty && self.right.lineType != LineType.lineTypeEmpty && self.left.lineType != LineType.lineTypeEmpty && self.bottom.lineType != LineType.lineTypeEmpty {
             
             if playerType == PlayerType.playerType1 {
+                
                 self.boxType = BoxType.boxTypePlayer1
+                
                 GameView.player_counter += 1
+                
+                UIView.transition(with: GameView.scorePlayerCounter, duration: 0.5, options: .transitionCrossDissolve, animations:
+                                    {
+                                        GameView.scorePlayerCounter.textColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70)
+                                    }, completion: nil)
+                
             } else  if playerType == PlayerType.playerType2 {
+                
                 self.boxType = BoxType.boxTypePlayer2
+                
                 GameView.computer_counter += 1
+                
+                UIView.transition(with: GameView.scoreComputerCounter, duration: 0.5, options: .transitionCrossDissolve, animations:
+                                    {
+                                        GameView.scoreComputerCounter.textColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1)
+                                    }, completion: nil)
             }
         }
     }
     
     override var description : String {
         
-        return "Box type \(self.boxType) at top \(self.top)"
+        return "Box type \(String(describing: self.boxType)) at top \(String(describing: self.top))"
     }
     
 }

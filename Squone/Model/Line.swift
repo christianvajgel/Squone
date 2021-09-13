@@ -14,7 +14,7 @@ enum PlayerType {
 }
 
 enum LineType {
-
+    
     case lineTypeEmpty, lineTypePlayer1, lineTypePlayer2
 }
 
@@ -45,7 +45,7 @@ class Line: NSObject {
                 margin = Int(self.endpoint2.location.x - self.endpoint1.location.x)/3
                 self.toachRect = CGRect(x: self.endpoint1.location.x + CGFloat(offset), y: self.endpoint1.location.y - CGFloat(margin), width: self.endpoint2.location.x - self.endpoint1.location.x - CGFloat(offset) - CGFloat(offset), height: CGFloat(margin) * 2);
             }
-
+            
         }
         
         return self.toachRect
@@ -53,9 +53,9 @@ class Line: NSObject {
     
     override var description : String {
         
-        return "Line at \(self.endpoint1),\(self.endpoint2)"
+        return "Line at \(String(describing: self.endpoint1)),\(String(describing: self.endpoint2))"
         
     }
     
-
+    
 }

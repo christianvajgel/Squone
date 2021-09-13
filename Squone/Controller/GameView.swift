@@ -10,6 +10,11 @@ import AVFoundation
 
 class GameView: UIView {
     
+    var timer = Timer()
+    var logo: UIImage!
+    var logoImageView: UIImageView!
+    var buttonRefresh: UIButton!
+    
     var board: [[String]]
     
     var dotArray: Array<Dot>
@@ -18,36 +23,152 @@ class GameView: UIView {
     var currentLine: Line!
     var lineLayer = CAShapeLayer()
     var counter = 0
+    
     static var player_counter = 0
     static var computer_counter = 0
-    var txtField: UITextField = UITextField(frame: CGRect(x: 120.00, y: 80.00, width: 250.00, height: 60.00))
+    
+    var scorePlayer: UILabel = UILabel(frame: CGRect(x: 120.00, y: 120.00, width: 250.00, height: 60.00))
+    static var scorePlayerCounter: UILabel = UILabel(frame: CGRect(x: 120.00, y: 120.00, width: 250.00, height: 60.00))
+    
+    var scoreComputer: UILabel = UILabel(frame: CGRect(x: 120.00, y: 120.00, width: 250.00, height: 60.00))
+    static var scoreComputerCounter: UILabel = UILabel(frame: CGRect(x: 120.00, y: 120.00, width: 250.00, height: 60.00))
+    
+    var dotColor = UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1)
+    
+    var computerBoxColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 0.75)
+    var computerLineColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1)
+    var computerAnimationLineColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
+    
+    var playerBoxColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70)
+    var playerLineColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70)
+    
+    let lightThemeBackground = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    let darkThemeBackground = UIColor(red: 10/255, green: 10/255, blue: 10/255, alpha: 1)
     
     override init(frame: CGRect) {
         
         self.board = []
         
-        //print("\nInitializing arrays")
+        // Initializing arrays
         self.dotArray = Array<Dot>()
         self.lineArray = Array<Line>()
         self.boxArray = Array<Box>()
         super.init(frame: frame)
         
-//        var txtField: UITextField = UITextField(frame: CGRect(x: 120.00, y: 80.00, width: 250.00, height: 60.00))
-        self.addSubview(txtField)
         
-        txtField.borderStyle = UITextField.BorderStyle.none
-        txtField.text = "Player \(GameView.player_counter)\nComputer \(GameView.computer_counter)"
-        txtField.backgroundColor = UIColor.white
+        // getting device (frame) width and height in pixels
+        let deviceWidth = frame.size.width
         
-        //print("\nSetting background and game variables")
-        self.backgroundColor = UIColor.white
+        // setting dotColor according with the actual theme
+        dotColor = traitCollection.userInterfaceStyle == .light ? UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1) : UIColor(red: 132/255, green: 132/255, blue: 132/255, alpha: 1)
+        
+        
+        // MARK: Logo Image View
+        
+        let logoWidth = CGFloat(125.00)
+        let logoHeight = CGFloat(125.00)
+        
+        let screenPercentHorizontalLogo = CGFloat(0.400700934579)
+        
+        let logoPositionHorizontal = CGFloat(deviceWidth - (deviceWidth - (deviceWidth * screenPercentHorizontalLogo)))
+        let logoPositionVertical = CGFloat(50.00)
+        
+        logo = traitCollection.userInterfaceStyle == .light ? UIImage(named: "squone_light_theme.png") : UIImage(named: "squone_dark_theme.png")
+        logoImageView = UIImageView(frame: CGRect(x: logoPositionHorizontal, y: logoPositionVertical, width: logoWidth, height: logoHeight))
+        logoImageView.contentMode = UIView.ContentMode.scaleAspectFit
+        logoImageView.image = logo
+        
+        self.addSubview(logoImageView)
+        
+        
+        // MARK: Label Player
+        
+        let screenPercentHorizontalScorePlayer = CGFloat(0.848130841121)
+        
+        let scorePlayerPositionHorizontal = CGFloat(deviceWidth - (deviceWidth * screenPercentHorizontalScorePlayer))
+        let scorePlayerPositionVertical = CGFloat(logoImageView.frame.maxY + 10)
+        
+        scorePlayer = UILabel(frame: CGRect(x: scorePlayerPositionHorizontal, y: scorePlayerPositionVertical, width: 250.00, height: 60.00))
+        self.addSubview(scorePlayer)
+        
+        scorePlayer.text = "player"
+        scorePlayer.textColor = traitCollection.userInterfaceStyle == .light ? UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70) : UIColor(red: 86/255, green: 86/255, blue: 86/255, alpha: 1.0)
+        scorePlayer.font = UIFont(name: "Poppins-Light", size: 22)
+        
+        
+        // MARK: Label Player Counter
+        
+        let screenPercentHorizontalScorePlayerCounter = CGFloat(0.789719626168)
+        
+        let scorePlayerCounterPositionHorizontal = CGFloat(deviceWidth - (deviceWidth * screenPercentHorizontalScorePlayerCounter))
+        let scorePlayerCounterPositionVertical = CGFloat(logoImageView.frame.maxY + 45)
+        
+        GameView.scorePlayerCounter = UILabel(frame: CGRect(x: scorePlayerCounterPositionHorizontal, y: scorePlayerCounterPositionVertical, width: 250.00, height: 60.00))
+        self.addSubview(GameView.scorePlayerCounter)
+        
+        GameView.scorePlayerCounter.text = "\(GameView.player_counter)"
+        GameView.scorePlayerCounter.textColor = traitCollection.userInterfaceStyle == .light ? UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70) : UIColor(red: 86/255, green: 86/255, blue: 86/255, alpha: 1.0)
+        GameView.scorePlayerCounter.font = UIFont(name: "Poppins-Light", size: 22)
+        
+        
+        // MARK: Button Refresh
+        
+        let screenPercentHorizontalButtonRefresh = CGFloat(0.380841121495)
+        
+        let buttonRefreshPositionHorizontal = CGFloat(deviceWidth - (deviceWidth - (deviceWidth * screenPercentHorizontalButtonRefresh)))
+        let buttonRefreshPositionVertical = CGFloat(logoImageView.frame.maxY + 30)
+        
+        buttonRefresh = UIButton(frame: CGRect(x: buttonRefreshPositionHorizontal, y: buttonRefreshPositionVertical, width: 100, height: 50))
+        buttonRefresh.backgroundColor = .clear
+        buttonRefresh.setImage(UIImage(systemName: "arrow.clockwise"),for: .normal)
+        buttonRefresh.tintColor = dotColor
+        
+        buttonRefresh.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        self.addSubview(buttonRefresh)
+        
+        
+        // MARK: Label Robot
+        
+        let screenPercentHorizontalScoreComputer = CGFloat(0.292056074766)
+        
+        let scoreComputerPositionHorizontal = CGFloat(deviceWidth - (deviceWidth * screenPercentHorizontalScoreComputer))
+        let scoreComputerPositionVertical = CGFloat(logoImageView.frame.maxY + 10)
+        
+        scoreComputer = UILabel(frame: CGRect(x: scoreComputerPositionHorizontal, y: scoreComputerPositionVertical, width: 250.00, height: 60.00))
+        self.addSubview(scoreComputer)
+        
+        scoreComputer.text = "robot"
+        scoreComputer.textColor = traitCollection.userInterfaceStyle == .light ? UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 0.75) : UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1.0)
+        scoreComputer.font = UIFont(name: "Poppins-Light", size: 22)
+        
+        
+        // MARK: Label Robot Counter
+        
+        let screenPercentHorizontalScoreComputerCounter = CGFloat(0.239485981308)
+        
+        let scoreComputerCounterPositionHorizontal = CGFloat(deviceWidth - (deviceWidth * screenPercentHorizontalScoreComputerCounter))
+        let scoreComputerCounterPositionVertical = CGFloat(logoImageView.frame.maxY + 45)
+        
+        GameView.scoreComputerCounter = UILabel(frame: CGRect(x: scoreComputerCounterPositionHorizontal, y: scoreComputerCounterPositionVertical, width: 250.00, height: 60.00))
+        self.addSubview(GameView.scoreComputerCounter)
+        
+        GameView.scoreComputerCounter.text = "\(GameView.computer_counter)"
+        GameView.scoreComputerCounter.textColor = traitCollection.userInterfaceStyle == .light ? UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 0.75) : UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1.0)
+        GameView.scoreComputerCounter.font = UIFont(name: "Poppins-Light", size: 22)
+        
+        
+        // setting background and game variables
+        self.backgroundColor = traitCollection.userInterfaceStyle == .light ? lightThemeBackground : darkThemeBackground
         let xCount = 4
         let yCount = 4
         let size = (frame.size.width - 80) / CGFloat(xCount - 1)
-//        var y = 80
-        var y = 180
         
-        //print("\n****** Building board")
+        // MARK: Vertical position of board
+        // defined by 'y'
+        
+        var y = Int(GameView.scorePlayerCounter.frame.maxY) + 50
+        
+        // building board
         for i in 0  ..< xCount {
             var x = 40
             
@@ -56,16 +177,14 @@ class GameView: UIView {
                 let dot = Dot()
                 dot.location = CGPoint(x: CGFloat(x), y: CGFloat(y))
                 dot.point = CGPoint(x: CGFloat(j), y: CGFloat(i))
-                //                //print("dot is \(dot)\n")
                 self.dotArray.append(dot)
-                //                //print("dotArray is \(self.dotArray)\n")
                 x += Int(size)
             }
             y += Int(size)
             
         }
         
-        //print("\nCreating lines")
+        // creating lines
         for i in 0  ..< xCount {
             for j in 0  ..< yCount {
                 
@@ -77,14 +196,8 @@ class GameView: UIView {
                 }
             }
         }
-        //print("Created lines OK")
-        //        //print("\n### LINE ARRAY \n")
-        //        //print(lineArray)
-        //        //print("\n### DOT ARRAY \n")
-        //        //print(dotArray)
-        //        //print("\n\n")
         
-        //print("\nCreating boxes")
+        // creating boxes
         for i in 0  ..< xCount {
             for j in 0  ..< yCount {
                 
@@ -93,18 +206,79 @@ class GameView: UIView {
                 }
             }
         }
-        //print("Created boxes OK")
-        //print("\n****** Build board OK")
         
-        //print("\nSetting animation for the lines")
-        //NNNN this lines are about line animations:
+        // setting animation for the lines
+        // this lines are about line animations
         self.lineLayer = CAShapeLayer(layer: layer)
         self.lineLayer.backgroundColor = UIColor.clear.cgColor
-        self.lineLayer.strokeColor = UIColor.darkGray.cgColor
+        self.lineLayer.strokeColor = computerAnimationLineColor.cgColor
         self.lineLayer.lineWidth = 8
         self.lineLayer.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: self.frame.size.width, height: self.frame.size.height)
         self.layer.addSublayer(self.lineLayer)
         self.newGame()
+        
+        // MARK: Timer to start the watcher for theme switch
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+            self.checkForDisplayedTheme()
+        })
+    }
+    
+    // MARK: Check and set Color Pallete
+    func checkForDisplayedTheme() {
+        
+        if traitCollection.userInterfaceStyle == .light {
+            
+            self.backgroundColor = lightThemeBackground
+            
+            logo = UIImage(named: "squone_light_theme.png")
+            logoImageView.image = logo
+            
+            playerBoxColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70)
+            playerLineColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.70)
+            
+            scorePlayer.textColor = playerBoxColor
+            GameView.scorePlayerCounter.textColor = playerBoxColor
+            
+            computerBoxColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 0.75)
+            computerLineColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1)
+            
+            scoreComputer.textColor = computerBoxColor
+            GameView.scoreComputerCounter.textColor = computerBoxColor
+            
+            dotColor = UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1)
+            
+            buttonRefresh.tintColor = dotColor
+            
+        }
+        
+        else {
+            
+            self.backgroundColor = darkThemeBackground
+            
+            logo = UIImage(named: "squone_dark_theme.png")
+            logoImageView.image = logo
+            
+            playerBoxColor = UIColor(red: 86/255, green: 86/255, blue: 86/255, alpha: 1.0)
+            playerLineColor = UIColor(red: 56/255, green: 56/255, blue: 56/255, alpha: 1.0)
+            
+            scorePlayer.textColor = playerBoxColor
+            GameView.scorePlayerCounter.textColor = playerBoxColor
+            
+            computerBoxColor = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1.0)
+            computerLineColor = UIColor(red: 160/255, green: 160/255, blue: 160/255, alpha: 1.0)
+            
+            scoreComputer.textColor = computerBoxColor
+            GameView.scoreComputerCounter.textColor = computerBoxColor
+            
+            dotColor = UIColor(red: 132/255, green: 132/255, blue: 132/255, alpha: 1)
+            
+            buttonRefresh.tintColor = dotColor
+        }
+    }
+    
+    // MARK: Refresh icon on-click response
+    @objc func buttonAction(sender: UIButton!) {
+        newGame()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -112,7 +286,6 @@ class GameView: UIView {
     }
     
     func animateLine(_ line: Line) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let fromPath = UIBezierPath()
         fromPath.move(to: line.endpoint2.location)
         fromPath.addLine(to: line.endpoint1.location)
@@ -123,27 +296,36 @@ class GameView: UIView {
         let pathAnim = CABasicAnimation(keyPath: "path")
         pathAnim.fromValue = fromPath.cgPath
         pathAnim.toValue = toPath.cgPath
-        pathAnim.duration = 0.5
+        // MARK: Line animation duration
+        pathAnim.duration = 0.75 // 0.5
         self.lineLayer.add(pathAnim, forKey: "pathAnimation")
+        // MARK: Line animation width
+        self.lineLayer.lineWidth = 6
         self.lineLayer.setNeedsDisplay()
     }
     
     @objc func checkGameOver() {
-        //print("\nFunction: \(#function), line: \(#line)")
         if self.gameOver() {
             if self.player1Won() {
-                //                //print("You won!!")
+                let alert = UIAlertController(title: "You won! 🏆",message:"Congrats, you won with \(GameView.player_counter) squares!",
+                                              preferredStyle: UIAlertController.Style.actionSheet)
+                alert.addAction(UIAlertAction(title: "New game",style:UIAlertAction.Style.default,handler: nil))
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                
                 self.newGame()
             } else {
-                //                //print("I won!!")
+                let alert = UIAlertController(title: "Robot won! 🦾",message:"You lost for a difference of \(GameView.computer_counter - GameView.player_counter) square(s)!",
+                                              preferredStyle: UIAlertController.Style.actionSheet)
+                alert.addAction(UIAlertAction(title: "New game",style:UIAlertAction.Style.default,handler: nil))
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
                 self.newGame()
                 
             }
         }
     }
     
+    // response for player tap
     func tapAtPoint(_ point:CGPoint) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let line = self.currentLine
         if line != nil && line!.lineType == LineType.lineTypeEmpty {
             line?.lineType = LineType.lineTypePlayer1
@@ -152,8 +334,6 @@ class GameView: UIView {
                 completed = true
                 self.checkGameOver()
             }
-            //            self.setNeedsDisplay()
-            
             if !completed {
                 self.computerPlay()
             }
@@ -161,7 +341,6 @@ class GameView: UIView {
     }
     
     func findDot(_ point: CGPoint) -> Dot? {
-        //print("\nFunction: \(#function), line: \(#line)")
         for dot in self.dotArray {
             if dot.point.equalTo(point) {
                 return dot
@@ -171,7 +350,6 @@ class GameView: UIView {
     }
     
     func findLine(_ p1: CGPoint, To p2: CGPoint) -> Line? {
-        //print("\nFunction: \(#function), line: \(#line)")
         for line in self.lineArray {
             if p1.equalTo(line.endpoint1.point) && p2.equalTo(line.endpoint2.point) {
                 return line
@@ -181,7 +359,6 @@ class GameView: UIView {
     }
     
     func findLineAtLocation(_ point: CGPoint) -> Line? {
-        //print("\nFunction: \(#function), line: \(#line)")
         for line in self.lineArray {
             let rect = line.getTouchRect()
             if rect.contains(point) {
@@ -192,15 +369,11 @@ class GameView: UIView {
     }
     
     func createLineFrom(_ p1: CGPoint, To p2: CGPoint) {
-        //print("\nFunction: \(#function), line: \(#line)")
-        
         let line = Line(WithEndpoint1: self.findDot(p1)!, endpoint2: self.findDot(p2)!)
         self.lineArray.append(line)
-        //        //print("lineArray is \(self.lineArray)\n")
     }
     
     func createBoxFrom(_ point: CGPoint) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let box = Box()
         let p1 = point
         let p2 = CGPoint(x: point.x + 1, y: point.y)
@@ -213,16 +386,11 @@ class GameView: UIView {
         box.id = String(self.counter)
         self.boxArray.append(box)
         
-        //print(self.counter)
-        
+        // MARK: Box counter add
         self.counter = self.counter + 1
-        
-        //print(self.counter)
-        //        //print("boxArray is \(self.boxArray)\n")
     }
     
     func checkAndSetBoxComplete(_ line: Line, playerType type: PlayerType) -> Bool {
-        //print("\nFunction: \(#function), line: \(#line)")
         var completeCount = 0
         for box in boxArray {
             if box.boxType == BoxType.boxTypeEmpty && box.boxContainsLine(line) {
@@ -232,12 +400,13 @@ class GameView: UIView {
                 }
             }
         }
-        txtField.text = "Player \(GameView.player_counter)\nComputer \(GameView.computer_counter)"
+        GameView.scorePlayerCounter.text = "\(GameView.player_counter)"
+        GameView.scoreComputerCounter.text = "\(GameView.computer_counter)"
+        
         return completeCount > 0
     }
     
     func gameOver() -> Bool {
-        //print("\nFunction: \(#function), line: \(#line)")
         for box in self.boxArray {
             if box.boxType == BoxType.boxTypeEmpty {
                 return false
@@ -247,7 +416,6 @@ class GameView: UIView {
     }
     
     func player1Won() -> Bool {
-        //print("\nFunction: \(#function), line: \(#line)")
         var count1 = 0
         var count2 = 0
         for box in self.boxArray {
@@ -261,7 +429,6 @@ class GameView: UIView {
     }
     
     func newGame() {
-        //print("\nFunction: \(#function), line: \(#line)")
         for line in self.lineArray {
             line.lineType = LineType.lineTypeEmpty
         }
@@ -277,16 +444,17 @@ class GameView: UIView {
         
         GameView.player_counter = 0
         GameView.computer_counter = 0
-        txtField.text = "Player \(GameView.player_counter)\nComputer \(GameView.computer_counter)"
+        
+        GameView.scorePlayerCounter.text = "\(GameView.player_counter)"
+        GameView.scoreComputerCounter.text = "\(GameView.computer_counter)"
         
         self.setNeedsDisplay()
         
         updateBoard()
-//        print("Board newGame -> \(self.board)")
     }
     
+    // when player touch starts
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let t = touches.first
         let location = t!.location(in: self)
         let line = findLineAtLocation(location)
@@ -295,9 +463,8 @@ class GameView: UIView {
         }
     }
     
+    // when player touches end
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //print("\nFunction: \(#function), line: \(#line)")
-        //        //print("touchesEnded")
         let t = touches.first
         let point = t!.location(in: self)
         self.tapAtPoint(point)
@@ -306,13 +473,12 @@ class GameView: UIView {
     }
     
     func strokeDot(_ dot: Dot) {
-        //print("\nFunction: \(#function), line: \(#line)")
-        // Ebony Clay #22313F
-        let dotColor = UIColor(red: 34.0/255.0, green: 49/255.0, blue: 62/255.0, alpha: 1)
+        let dotColor = dotColor
         dotColor.setFill()
         UIColor.darkGray.setStroke()
         let bp = UIBezierPath()
-        bp.lineWidth = 2
+        // MARK: Dot radius drawed
+        bp.lineWidth = 0 // 2
         bp.lineCapStyle = CGLineCap.square
         bp.addArc(withCenter: dot.location, radius: 5, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
         bp.fill()
@@ -321,33 +487,28 @@ class GameView: UIView {
     }
     
     func strokeLine(_ line: Line) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let bp = UIBezierPath()
-        bp.lineWidth = 8
+        // MARK: Line Width Drawed
+        bp.lineWidth = 6 // 8
         bp.lineCapStyle = CGLineCap.round
         bp.move(to: line.endpoint1.location)
         bp.addLine(to: line.endpoint2.location)
-        //        UIColor.darkGrayColor().setStroke()
         bp.stroke()
     }
     
     func strokeBox(_ box: Box) {
-        //print("\nFunction: \(#function), line: \(#line)")
         let bp = UIBezierPath()
         bp.move(to: box.top.endpoint1.location)
         bp.addLine(to: box.top.endpoint2.location)
         bp.addLine(to: box.right.endpoint2.location)
         bp.addLine(to: box.left.endpoint2.location)
         bp.addLine(to: box.left.endpoint1.location)
-        //        UIColor.darkGrayColor().setFill()
         bp.fill()
     }
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        //print("\nFunction: \(#function), line: \(#line)")
-        //        //print("drawRect")
         
         for dot in self.dotArray {
             self.strokeDot(dot)
@@ -355,44 +516,36 @@ class GameView: UIView {
         
         for box in self.boxArray {
             if box.boxType == BoxType.boxTypePlayer1 {
-                // Piction Blue #22A7F0
-                let boxColor1 = UIColor(red: 34.0/255.0, green: 168.0/255.0, blue: 240.0/255.0, alpha: 1)
+                let boxColor1 = playerBoxColor
                 boxColor1.setFill()
                 self.strokeBox(box)
             } else if box.boxType == BoxType.boxTypePlayer2 {
-                // Fire Bush #EB9532
-                let boxColor2 = UIColor(red: 235/255, green: 149/255, blue: 50/255, alpha: 1)
+                let boxColor2 = computerBoxColor
                 boxColor2.setFill()
                 self.strokeBox(box)
             }
         }
         
         for line in self.lineArray {
-            //print("\nFunction: \(#function), line: \(#line)")
             if line.lineType == LineType.lineTypePlayer1 {
-                // Jelly Bean #2574A9
-                let lineColor1 = UIColor(red: 37/255, green: 116/255, blue: 169/255, alpha: 1)
+                let lineColor1 = playerLineColor
                 lineColor1.setStroke()
                 self.strokeLine(line)
             } else if line.lineType == LineType.lineTypePlayer2 {
-                // Burnt Orange #D35400
-                let lineColor2 = UIColor(red: 211/255, green: 84/255, blue: 0/255, alpha: 1)
+                let lineColor2 = computerLineColor
                 lineColor2.setStroke()
                 self.strokeLine(line)
             }
         }
         
-        // Ebony Clay #22313F
-        let currentLineColor = UIColor(red: 34.0/255, green: 49.0/255, blue: 63.0/255, alpha: 1)
+        let currentLineColor = UIColor.clear
         currentLineColor.setStroke()
-        //print("Ebony Clay")
         if self.currentLine != nil {
             self.strokeLine(self.currentLine)
         }
-
-        // MARK: Calling updateBoard()
+        
+        // MARK: Calling updateBoard
         updateBoard()
-//        print("Board draw -> \(self.board)")
     }
     
     // MARK: Update Board
@@ -407,7 +560,7 @@ class GameView: UIView {
             }
             
             for index in 0...self.board.count-1 {
-
+                
                 let square = self.board[index]
                 
                 if box.id == square[0] {
@@ -440,8 +593,6 @@ class GameView: UIView {
     
     // MARK: Computer play
     @objc func computerPlay() {
-        //        //print("computerPlay")
-        //print("\nFunction: \(#function), line: \(#line)")
         let newLine = self.selectAline()
         if newLine != nil && newLine?.lineType == LineType.lineTypeEmpty {
             self.animateLine(newLine!)
@@ -457,7 +608,6 @@ class GameView: UIView {
     }
     
     func getBoxById(_ id: String) -> Box? {
-//        print("getBoxById -> Id \(id)")
         for box in boxArray {
             if box.id == id {
                 return box
@@ -468,10 +618,7 @@ class GameView: UIView {
     
     func getEmptyLineFromBox(_ id: String) -> [Line?] {
         
-//        print("getEmptyLineFromBox -> Id \(id)")
-        
         let board = self.board
-//        let board = self.board
         let box = getBoxById(id)!
         var lineArray = [Line]()
         
@@ -500,14 +647,13 @@ class GameView: UIView {
     
     // MARK: Computer's play logic
     func selectAline() -> Line? {
-        //print("\nFunction: \(#function), line: \(#line)")
         
         updateBoard()
         
         let boardSorted = self.board
         
         let result = boardSorted.sorted { (a, b) -> Bool in
-                    return a.count > b.count
+            return a.count > b.count
         }
         
         var id = "0"
@@ -541,37 +687,23 @@ class GameView: UIView {
             counter += 1
         }
         
-//        print("***** FOUR: \(four)\n ONE: \(one)\n TWO: \(two)\n THREE: \(three) *****")
-        
         if !four.isEmpty {
-//            id = four[0][0]
             id = four[Int.random(in: 0..<four.count)][0]
-//            print("---- FOUR: \(four)\nID: \(id) ----")
         }
         
         else if !one.isEmpty {
             let box = Int.random(in: 0 ..< one.count)
-//            let line = Int.random(in: 0 ..< one[box].count)
             id = one[box][0]
-//            print("- ONE: \(one)\nID: \(id) \nBOX: \(box)\nLINE: \(line) -")
             
-//            id = one[0][0]
         }
         
         else if !two.isEmpty {
             let box = Int.random(in: 0 ..< two.count)
-//            let line = Int.random(in: 0 ..< two[box].count)
             id = two[box][0]
-//            print("-- TWO: \(two)\nID: \(id) \nBOX: \(box)\nLINE: \(line) --")
-//            id = two[0][0]
         }
-            
+        
         else if !three.isEmpty {
-//            let box = Int.random(in: 0 ..< three.count-1)
-//            let line = Int.random(in: 0 ..< three[box].count-1)
-//            id = three[box][line]
             id = three[0][0]
-//            print("--- THREE: \(three)\nID: \(id) ---")
             
         }
         
@@ -582,109 +714,9 @@ class GameView: UIView {
         let lines = getEmptyLineFromBox(id)
         
         let line_id = Int.random(in: 0 ..< lines.count)
-
+        
         let line = lines[line_id]
         
         return line
-        
-        
-//        var one = [Line]()
-//        var two = [Line]()
-//        var three = [Line]()
-//        var four = [Line]()
-//        for box in self.boxArray {
-//            var emptyLines = 0
-//            if box.top.lineType == LineType.lineTypeEmpty  {
-//                emptyLines += 1
-//            }
-//            if box.left.lineType == LineType.lineTypeEmpty  {
-//                emptyLines += 1
-//            }
-//            if box.right.lineType == LineType.lineTypeEmpty  {
-//                emptyLines += 1
-//            }
-//            if box.bottom.lineType == LineType.lineTypeEmpty  {
-//                emptyLines += 1
-//            }
-//
-//            switch emptyLines {
-//            case 1:
-//                if box.top.lineType == LineType.lineTypeEmpty  {
-//                    one.append(box.top)
-//                }
-//                if box.left.lineType == LineType.lineTypeEmpty  {
-//                    one.append(box.left)
-//                }
-//                if box.right.lineType == LineType.lineTypeEmpty  {
-//                    one.append(box.right)
-//                }
-//                if box.bottom.lineType == LineType.lineTypeEmpty  {
-//                    one.append(box.bottom)
-//                }
-//            case 2:
-//                if box.top.lineType == LineType.lineTypeEmpty  {
-//                    two.append(box.top)
-//                }
-//                if box.left.lineType == LineType.lineTypeEmpty  {
-//                    two.append(box.left)
-//                }
-//                if box.right.lineType == LineType.lineTypeEmpty  {
-//                    two.append(box.right)
-//                }
-//                if box.bottom.lineType == LineType.lineTypeEmpty  {
-//                    two.append(box.bottom)
-//                }
-//            case 3:
-//                if box.top.lineType == LineType.lineTypeEmpty  {
-//                    three.append(box.top)
-//                }
-//                if box.left.lineType == LineType.lineTypeEmpty  {
-//                    three.append(box.left)
-//                }
-//                if box.right.lineType == LineType.lineTypeEmpty  {
-//                    three.append(box.right)
-//                }
-//                if box.bottom.lineType == LineType.lineTypeEmpty  {
-//                    three.append(box.bottom)
-//                }
-//            case 4:
-//                if box.top.lineType == LineType.lineTypeEmpty  {
-//                    four.append(box.top)
-//                }
-//                if box.left.lineType == LineType.lineTypeEmpty  {
-//                    four.append(box.left)
-//                }
-//                if box.right.lineType == LineType.lineTypeEmpty  {
-//                    four.append(box.right)
-//                }
-//                if box.bottom.lineType == LineType.lineTypeEmpty  {
-//                    four.append(box.bottom)
-//                }
-//            default: break
-//            }
-//
-//        }
-//
-//        var count = one.count
-//        if count >= 1 {
-//            let index = Int(arc4random_uniform(UInt32(count)))
-//            return one[index]
-//        }
-//        count = four.count
-//        if count >= 1 {
-//            let index = Int(arc4random_uniform(UInt32(count)))
-//            return four[index]
-//        }
-//        count = three.count
-//        if count >= 1 {
-//            let index = Int(arc4random_uniform(UInt32(count)))
-//            return three[index]
-//        }
-//        count = two.count
-//        if count >= 1 {
-//            let index = Int(arc4random_uniform(UInt32(count)))
-//            return two[index]
-//        }
-        return nil
     }
 }
