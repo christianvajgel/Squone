@@ -304,20 +304,70 @@ class GameView: UIView {
         self.lineLayer.setNeedsDisplay()
     }
     
+    // MARK: Check game over and alert funny messages
     @objc func checkGameOver() {
         if self.gameOver() {
+            
             if self.player1Won() {
-                let alert = UIAlertController(title: "You won! 🏆",message:"Congrats, you won with \(GameView.player_counter) squares!",
+                
+                let funnyTitles = ["Parabéns! 👏🏻",
+                                   "Sexxxxxxtou! 🍾",
+                                   "1. Vencer um robô corretamente 🏆",
+                                   "Só tiro pro alto! 🔫"]
+                
+                let funnyMessages = ["Você venceu do robô por \(GameView.player_counter) a \(GameView.computer_counter)!",
+                                     "Ou pelo menos voce ganhou alguma coisa hoje...",
+                                     "O(a) aluno(a) venceu 'corretamente' um robô que não consegue levantar um copo d'água e só joga em quatro posições diferentes?",
+                                     "Venceu pela terceira vez?"]
+                
+                let funnyButtons = ["Postar no LinkedIn 📱",
+                                    "É a vida né... é o que tem 👌🏻",
+                                    "Demonstrou o item de rubrica ✅",
+                                    "Pedir música no Fantástico 🎼"]
+                
+                let random = Int.random(in: 0 ..< funnyMessages.count)
+                
+                let alert = UIAlertController(title: funnyTitles[random],
+                                              message: funnyMessages[random],
                                               preferredStyle: UIAlertController.Style.actionSheet)
-                alert.addAction(UIAlertAction(title: "New game",style:UIAlertAction.Style.default,handler: nil))
+                alert.addAction(UIAlertAction(title:funnyButtons[random],
+                                              style:UIAlertAction.Style.default,handler: nil))
+                
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
                 
                 self.newGame()
+                
             } else {
-                let alert = UIAlertController(title: "Robot won! 🦾",message:"You lost for a difference of \(GameView.computer_counter - GameView.player_counter) square(s)!",
+                
+                let difference = GameView.computer_counter - GameView.player_counter
+                
+                let square = difference > 1 ? "squares" : "square"
+                
+                let funnyTitles = ["Hasta la vista, baby! 🔫",
+                                   "You shall not pass! 🧙🏻‍♂️",
+                                   "I am Megatron! 🦾",
+                                   "Red pill or blue pill? 💊"]
+                
+                let funnyMessages = ["You lost for a difference of \(difference) \(square) for Terminator! But don't get upset, robots can't even easily lift a beer.\nCheers for you! 🍺",
+                                     "Yeah we all know this is from Lord of Rings and Gandalf isn't a robot. Whatever... you still lost with a difference of \(difference) \(square) for a robot with four simple rules! Here is a ring to make you feel better! 💍",
+                                     "Congratulations Intern for unfreezing Megatron!\nGreat job on loosing for a difference of \(difference) \(square)!\nHold this cube for me and Sam get to the building! 🧊",
+                                     "Neither one! You deserve the pill of shame for losing with a difference of \(difference) \(square)! Come on Neo... flying and dodging of bullets aren't cool as beat The Matrix here.\nGrab this new suit and try again. 🥼"]
+                
+                let funnyButtons = ["Let's drink, ops... play again!",
+                                    "Tell Frodo you got the ring and try again!",
+                                    "Call Optimus Prime and come on, Decepticon punk!",
+                                    "Get Trinity, resurrect and try for the fourth time!"]
+                
+                let random = Int.random(in: 0 ..< funnyMessages.count)
+                
+                let alert = UIAlertController(title: funnyTitles[random],
+                                              message: funnyMessages[random],
                                               preferredStyle: UIAlertController.Style.actionSheet)
-                alert.addAction(UIAlertAction(title: "New game",style:UIAlertAction.Style.default,handler: nil))
+                alert.addAction(UIAlertAction(title:funnyButtons[random],
+                                              style:UIAlertAction.Style.destructive,handler: nil))
+                
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                
                 self.newGame()
                 
             }
