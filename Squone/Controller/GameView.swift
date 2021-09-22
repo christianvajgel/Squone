@@ -523,7 +523,7 @@ class GameView: UIView {
     }
     
     func strokeDot(_ dot: Dot) {
-        let dotColor = dotColor
+        let dotColor = self.dotColor
         dotColor.setFill()
         UIColor.darkGray.setStroke()
         let bp = UIBezierPath()

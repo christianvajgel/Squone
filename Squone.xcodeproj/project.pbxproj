@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		831C9DEF26B41D5E007E12A9 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C9DEE26B41D5E007E12A9 /* GameView.swift */; };
 		831C9DF126B41DC5007E12A9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C9DF026B41DC5007E12A9 /* Box.swift */; };
-		832DABCE26EE23FF00E6EA0B /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 832DABCA26EE23FF00E6EA0B /* Poppins-Light.ttf */; };
-		832DABCF26EE23FF00E6EA0B /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 832DABCB26EE23FF00E6EA0B /* Poppins-Medium.ttf */; };
-		832DABD026EE23FF00E6EA0B /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 832DABCC26EE23FF00E6EA0B /* Poppins-Regular.ttf */; };
-		832DABD126EE23FF00E6EA0B /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 832DABCD26EE23FF00E6EA0B /* Poppins-Thin.ttf */; };
 		8350652926B1C4950053EC1F /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350652826B1C4950053EC1F /* Dot.swift */; };
 		8350652B26B1C8BA0053EC1F /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8350652A26B1C8BA0053EC1F /* Line.swift */; };
 		83578FED26B0ADBC00019CE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83578FEC26B0ADBC00019CE6 /* AppDelegate.swift */; };
@@ -37,6 +33,10 @@
 		8365F29C26EFF42A0061E463 /* logo_20px.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8365F28F26EFF42A0061E463 /* logo_20px.jpg */; };
 		8365F29D26EFF42A0061E463 /* logo_58px.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8365F29026EFF42A0061E463 /* logo_58px.jpg */; };
 		8365F29E26EFF42A0061E463 /* logo_167px.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8365F29126EFF42A0061E463 /* logo_167px.jpg */; };
+		D801EAC526F6796800AEBBFE /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D801EAC126F6796800AEBBFE /* Poppins-Regular.ttf */; };
+		D801EAC626F6796800AEBBFE /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D801EAC226F6796800AEBBFE /* Poppins-Light.ttf */; };
+		D801EAC726F6796800AEBBFE /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D801EAC326F6796800AEBBFE /* Poppins-Medium.ttf */; };
+		D801EAC826F6796800AEBBFE /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D801EAC426F6796800AEBBFE /* Poppins-Thin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,10 +59,6 @@
 /* Begin PBXFileReference section */
 		831C9DEE26B41D5E007E12A9 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		831C9DF026B41DC5007E12A9 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
-		832DABCA26EE23FF00E6EA0B /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
-		832DABCB26EE23FF00E6EA0B /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		832DABCC26EE23FF00E6EA0B /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
-		832DABCD26EE23FF00E6EA0B /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		8350652826B1C4950053EC1F /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 		8350652A26B1C8BA0053EC1F /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		83578FE926B0ADBC00019CE6 /* Squone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Squone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +89,10 @@
 		8365F28F26EFF42A0061E463 /* logo_20px.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo_20px.jpg; sourceTree = "<group>"; };
 		8365F29026EFF42A0061E463 /* logo_58px.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo_58px.jpg; sourceTree = "<group>"; };
 		8365F29126EFF42A0061E463 /* logo_167px.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo_167px.jpg; sourceTree = "<group>"; };
+		D801EAC126F6796800AEBBFE /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		D801EAC226F6796800AEBBFE /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
+		D801EAC326F6796800AEBBFE /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		D801EAC426F6796800AEBBFE /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,10 +131,10 @@
 		832DABC926EE23FF00E6EA0B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				832DABCA26EE23FF00E6EA0B /* Poppins-Light.ttf */,
-				832DABCB26EE23FF00E6EA0B /* Poppins-Medium.ttf */,
-				832DABCC26EE23FF00E6EA0B /* Poppins-Regular.ttf */,
-				832DABCD26EE23FF00E6EA0B /* Poppins-Thin.ttf */,
+				D801EAC226F6796800AEBBFE /* Poppins-Light.ttf */,
+				D801EAC326F6796800AEBBFE /* Poppins-Medium.ttf */,
+				D801EAC126F6796800AEBBFE /* Poppins-Regular.ttf */,
+				D801EAC426F6796800AEBBFE /* Poppins-Thin.ttf */,
 			);
 			name = Fonts;
 			path = ../../../../Desktop/Fonts;
@@ -331,23 +331,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				8365F29C26EFF42A0061E463 /* logo_20px.jpg in Resources */,
+				D801EAC626F6796800AEBBFE /* Poppins-Light.ttf in Resources */,
 				83578FFC26B0ADBC00019CE6 /* LaunchScreen.storyboard in Resources */,
-				832DABD126EE23FF00E6EA0B /* Poppins-Thin.ttf in Resources */,
 				83578FF926B0ADBC00019CE6 /* Assets.xcassets in Resources */,
 				8365F29A26EFF42A0061E463 /* logo_87px.jpg in Resources */,
 				8365F29D26EFF42A0061E463 /* logo_58px.jpg in Resources */,
+				D801EAC526F6796800AEBBFE /* Poppins-Regular.ttf in Resources */,
 				83578FF426B0ADBC00019CE6 /* Main.storyboard in Resources */,
 				8365F29B26EFF42A0061E463 /* logo_120px.jpg in Resources */,
-				832DABD026EE23FF00E6EA0B /* Poppins-Regular.ttf in Resources */,
+				D801EAC826F6796800AEBBFE /* Poppins-Thin.ttf in Resources */,
 				8365F29226EFF42A0061E463 /* logo_1024px.jpg in Resources */,
 				8365F29326EFF42A0061E463 /* logo_76px.jpg in Resources */,
 				8365F29E26EFF42A0061E463 /* logo_167px.jpg in Resources */,
 				8365F29426EFF42A0061E463 /* logo_152px.jpg in Resources */,
-				832DABCE26EE23FF00E6EA0B /* Poppins-Light.ttf in Resources */,
 				8365F29926EFF42A0061E463 /* logo_180px.jpg in Resources */,
+				D801EAC726F6796800AEBBFE /* Poppins-Medium.ttf in Resources */,
 				8365F29726EFF42A0061E463 /* logo_40px.jpg in Resources */,
 				8365F29826EFF42A0061E463 /* logo_80px.jpg in Resources */,
-				832DABCF26EE23FF00E6EA0B /* Poppins-Medium.ttf in Resources */,
 				8365F29626EFF42A0061E463 /* logo_60px.jpg in Resources */,
 				8365F29526EFF42A0061E463 /* logo_29px.jpg in Resources */,
 			);
@@ -600,7 +600,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6K7Z24B35;
 				INFOPLIST_FILE = SquoneTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -622,7 +622,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6K7Z24B35;
 				INFOPLIST_FILE = SquoneTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -643,6 +643,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6K7Z24B35;
 				INFOPLIST_FILE = SquoneUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,6 +664,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S6K7Z24B35;
 				INFOPLIST_FILE = SquoneUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
